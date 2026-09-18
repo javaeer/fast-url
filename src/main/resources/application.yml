@@ -1,20 +1,20 @@
 base:
   config:
     mysql:
-      hostname: 119.3.172.150
+      hostname: 192.168.1.100
       port: 3306
       username: root
-      password: Walker@Boundless
+      password: 12345678
     redis:
-      host: 119.3.172.150
+      host: 192.168.1.100
       port: 6379
-      password: Walker@Boundless
+      password: 12345678
       database: 1
     rabbitmq:
-      host: 119.3.172.150
+      host: 192.168.1.100
       port: 5672
       username: javaeer
-      password: javaeer
+      password: 12345678
 spring:
   application:
     name: @artifactId@

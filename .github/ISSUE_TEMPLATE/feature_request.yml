@@ -1,0 +1,26 @@
+name: Feature request
+description: 提议一个新功能或改进
+title: "[Feat] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 背景与痛点
+      description: 这个功能要解决什么问题？现有的不足是什么？
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 设想方案
+      description: 你希望如何实现？可附接口 / 数据结构草图
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: 补充信息
+      description: 参考链接、截图或其他上下文
+    validations:
+      required: false
