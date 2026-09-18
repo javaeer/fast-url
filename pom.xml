@@ -50,7 +50,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- 显式管理非 Boot 托管的第三方版本 -->
-        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <mybatis-plus.version>3.5.17</mybatis-plus.version>
     </properties>
 
     <dependencies>
