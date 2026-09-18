@@ -1,9 +1,9 @@
 package cn.net.yunlou.fasturl.service;
 
-import cn.net.yunlou.common.ids.Sequence;
-import cn.net.yunlou.common.utils.EncoderUtils;
 import cn.net.yunlou.fasturl.entity.FastUrl;
 import cn.net.yunlou.fasturl.mapper.FastUrlMapper;
+import cn.net.yunlou.fasturl.utils.EncoderUtils;
+import cn.net.yunlou.fasturl.utils.Sequence;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.util.Optional;
 import org.springframework.stereotype.Service;

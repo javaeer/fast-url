@@ -20,7 +20,6 @@
 
 package cn.net.yunlou.fasturl;
 
-import cn.net.yunlou.common.beans.ICommonEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -43,7 +42,7 @@ import lombok.Getter;
  * 500 INTERNAL SERVER ERROR - [*]：服务器发生错误，用户将无法判断发出的请求是否成功。
  */
 @AllArgsConstructor
-public enum ResponzeStatus implements ICommonEnum<Integer> {
+public enum ResponzeStatus implements IEnum<Integer> {
     SUCCESS(200, "Success"),
 
     ALREADY_EXISTS(22600, "Already Exists"),

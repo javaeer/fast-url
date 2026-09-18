@@ -1,21 +1,18 @@
 package cn.net.yunlou.fasturl.controller;
 
-import cn.net.yunlou.common.redis.utils.RedisCacheUtils;
-import cn.net.yunlou.common.utils.ObjectUtils;
 import cn.net.yunlou.fasturl.ResponzeResult;
 import cn.net.yunlou.fasturl.entity.FastUrl;
 import cn.net.yunlou.fasturl.service.FastUrlService;
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import static cn.net.yunlou.fasturl.entity.FastUrlAccess.FAST_URL_ACCESS_ADD_EXCHANGE;
 import static cn.net.yunlou.fasturl.entity.FastUrlAccess.FAST_URL_ACCESS_ADD_ROUTING_KEY;
 
@@ -30,7 +27,7 @@ public class FastUrlController {
 
     private final RabbitTemplate rabbitTemplate;
 
-    private final RedisCacheUtils redisCacheUtils;
+    private final StringRedisTemplate stringRedisTemplate;
 
     private final FastUrlService fastUrlService;
 
@@ -46,8 +43,8 @@ public class FastUrlController {
         FastUrl fastUrl = new FastUrl(longUrl);
         FastUrl data = fastUrlService.saveAndGet(fastUrl);
         if (ObjectUtils.isNotEmpty(data)) {
-            if (ObjectUtils.isEmpty(redisCacheUtils.getObject(FastUrl.CACHE_KEY_PREFIX + data.getShortUrl()))) {
-                redisCacheUtils.putObject(FastUrl.CACHE_KEY_PREFIX + data.getShortUrl(), data.getLongUrl());
+            if (ObjectUtils.isEmpty(stringRedisTemplate.opsForValue().get(FastUrl.CACHE_KEY_PREFIX + data.getShortUrl()))) {
+                stringRedisTemplate.opsForValue().set(FastUrl.CACHE_KEY_PREFIX + data.getShortUrl(), data.getLongUrl());
             }
         }
         return ResponzeResult.success(data);
@@ -68,7 +65,7 @@ public class FastUrlController {
      */
     @GetMapping("{shortUrl}")
     public void redirect(@PathVariable(value = "shortUrl", required = false) String shortUrl, HttpServletRequest request, HttpServletResponse response) {
-        String longUrl = redisCacheUtils.getObject(FastUrl.CACHE_KEY_PREFIX + shortUrl);
+        String longUrl = stringRedisTemplate.opsForValue().get(FastUrl.CACHE_KEY_PREFIX + shortUrl);
         try {
             if (ObjectUtils.isEmpty(longUrl)) {
                 response.sendRedirect("https://smartcloudx.com/404.html");
