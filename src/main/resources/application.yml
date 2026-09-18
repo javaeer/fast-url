@@ -1,0 +1,81 @@
+base:
+  config:
+    mysql:
+      hostname: 119.3.172.150
+      port: 3306
+      username: root
+      password: Walker@Boundless
+    redis:
+      host: 119.3.172.150
+      port: 6379
+      password: Walker@Boundless
+      database: 1
+    rabbitmq:
+      host: 119.3.172.150
+      port: 5672
+      username: javaeer
+      password: javaeer
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+#    web-application-type: none
+  freemarker:
+    check-template-location: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${base.config.mysql.hostname}:${base.config.mysql.port}/fast_url?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${base.config.mysql.username}
+    password: ${base.config.mysql.password}
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 600000
+      maximum-pool-size: 10
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  redis:
+    host: ${base.config.redis.host}
+    port: ${base.config.redis.port}
+    database: ${base.config.redis.database}
+    password: ${base.config.redis.password}
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-idle: 20
+        min-idle: 5
+        max-active: 20
+        max-wait: 2ms
+  rabbitmq:
+    host: ${base.config.rabbitmq.host}
+    port: ${base.config.rabbitmq.port}
+    username: ${base.config.rabbitmq.username}
+    password: ${base.config.rabbitmq.password}
+    virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 8080
+  undertow:
+    io-threads: 16
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞IO操作, undertow会从这个线程池中取得线程
+    # 它的值设置取决于系统线程执行任务的阻塞系数，默认值是IO线程数*8
+    worker-threads: 256
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    buffer-size: 1024
+    # 每个区分配的buffer数量 , 所以pool的大小是buffer-size * buffers-per-region
+#    buffers-per-region: 1024
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    direct-buffers: true

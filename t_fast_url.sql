@@ -1,0 +1,1 @@
+INSERT INTO `t_fast_url` (`id`, `short_url`, `long_url`, `domain`, `create_time`, `update_time`, `sort`, `version_no`, `del_flag`) VALUES (822245607230087170, 'ZrwKAZ5ZDD', 'https://www.smartcloudx.com/customer?parentId=11090', NULL, NULL, NULL, NULL, NULL, 0);
